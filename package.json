@@ -1,0 +1,25 @@
+{
+  "name": "organization_hierarchy",
+  "version": "1.0.0",
+  "description": "Palador Tech. test",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stevensetiawan/organization_hierarchy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stevensetiawan/organization_hierarchy/issues"
+  },
+  "homepage": "https://github.com/stevensetiawan/organization_hierarchy#readme",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1"
+  }
+}
