@@ -10,7 +10,7 @@ module.exports = {
             delete i.directReports
           }
           for (let j of organization_model) {
-            if (i.managerId == j.employeeId) {
+            if (i.managerId === j.employeeId) {
               i.manager = {
                 employeeId: j.employeeId,
                 name: j.name,
@@ -22,10 +22,12 @@ module.exports = {
         let result = organization_model.map(({
           employeeId,
           name,
+          status,
           manager
         }) => ({
           employeeId,
           name,
+          status,
           manager
         }))
         return res.status(200).json(result)
@@ -47,7 +49,7 @@ module.exports = {
           if (i.employeeId == req.params.id) {
             i.status = 'active'
             for (let k of organization_model) {
-              if (i.managerId == k.employeeId) {
+              if (i.managerId === k.employeeId) {
                 i.manager = {
                   employeeId: k.employeeId,
                   name: k.name,
@@ -59,7 +61,7 @@ module.exports = {
               if (req.query.includeReportingTree === 'true') {
                 i.directReports = []
                 for (let j of organization_model) {
-                  if (i.employeeId == j.managerId) {
+                  if (i.employeeId === j.managerId) {
                     i.directReports.push({
                       employeeId: j.employeeId,
                       name: j.name,
@@ -106,9 +108,17 @@ module.exports = {
         return res.status(400).json('Invalid employee object')
       }
 
+      if (isNaN(req.body.managerId)) {
+        return res.status(400).json('Invalid managerId')
+      }
+
+      if (typeof req.body.managerId !== 'number') {
+        return res.status(400).json('managerId must be a number')
+      }
+
       let data = {
         name: req.body.name.trim(),
-        managerId: req.body.managerId.trim()
+        managerId: req.body.managerId
       }
 
       if (data.name === '') {
@@ -151,9 +161,17 @@ module.exports = {
         return res.status(400).json('Invalid employee object')
       }
 
+      if (isNaN(req.body.managerId)) {
+        return res.status(400).json('Invalid managerId')
+      }
+
+      if (typeof req.body.managerId !== 'number') {
+        return res.status(400).json('managerId must be a number')
+      }
+
       let data = {
         name: req.body.name.trim(),
-        managerId: req.body.managerId.trim()
+        managerId: req.body.managerId
       }
 
       if (data.name === '') {
@@ -170,7 +188,7 @@ module.exports = {
         for (let i of organization_model) {
           if (i.employeeId == req.params.id) {
             for (let k of organization_model) {
-              if (data.managerId == k.employeeId) {
+              if (data.managerId === k.employeeId) {
                 i.name = data.name,
                   i.managerId = data.managerId
                 return res.status(200).json(`${i.employeeId} is updated`)
@@ -197,11 +215,11 @@ module.exports = {
         for (let i of organization_model) {
           if (i.employeeId == req.params.id) {
             for (let k of organization_model) {
-              if (k.managerId == i.employeeId) {
+              if (k.managerId === i.employeeId) {
                 return res.status(404).json(`The employee must not have a direct report!`)
               }
             }
-            organization_model.splice(organization_model.findIndex(data => data.employeeId == i.employeeId), 1)
+            organization_model.splice(organization_model.findIndex(data => data.employeeId === i.employeeId), 1)
             return res.status(200).json(`Employee Id ${i.employeeId} is successfully deleted!`)
           }
         }
